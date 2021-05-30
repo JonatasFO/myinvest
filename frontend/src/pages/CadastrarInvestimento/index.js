@@ -8,13 +8,31 @@ import {
   Menu,
   Input,
   InputNumber,
+  Select,
 } from "antd";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import InvestimentoService from "../../services/InvestimentoService";
+import CategoriaService from "../../services/CategoriaService";
 
 const { Header, Content, Footer } = Layout;
+const { Option } = Select;
 
 export default function CadastrarInvestimento() {
+  const [categorias, setCategorias] = useState([]);
+  const [categoria, setCategoria] = useState(null);
+
+  useEffect(() => {
+    refreshCategorias();
+    return () => {};
+  }, []);
+
+  async function refreshCategorias() {
+    CategoriaService.retrieveAllCategorias().then((response) => {
+      setCategorias(response.data);
+    });
+  }
+
   const layout = {
     labelCol: {
       span: 4,
@@ -31,6 +49,7 @@ export default function CadastrarInvestimento() {
   };
 
   const onFinish = (values) => {
+    InvestimentoService.saveInvestimentos(values);
     message.success("Investimento salvo com sucesso!");
   };
 
@@ -38,6 +57,10 @@ export default function CadastrarInvestimento() {
     message.danger("Erro ao salvar o investimento!");
     console.log("Failed:", errorInfo);
   };
+
+  function handleChange(value) {
+    setCategoria(value);
+  }
 
   return (
     <div className="container">
@@ -79,7 +102,7 @@ export default function CadastrarInvestimento() {
               </Form.Item>
               <Form.Item
                 label="Valor"
-                name="valor"
+                name="valorCota"
                 rules={[
                   {
                     required: true,
@@ -112,6 +135,17 @@ export default function CadastrarInvestimento() {
                 ]}
               >
                 <DatePicker />
+              </Form.Item>
+              <Form.Item label="Categoria" name="categoria">
+                <Select onChange={handleChange}>
+                  {categorias.map((item, index) => {
+                    return (
+                      <Option key={item.id} value={item.id}>
+                        {item.nome}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Form.Item>
 
               <Form.Item {...tailLayout}>
