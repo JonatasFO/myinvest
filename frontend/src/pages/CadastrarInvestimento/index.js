@@ -20,7 +20,7 @@ const { Option } = Select;
 
 export default function CadastrarInvestimento() {
   const [categorias, setCategorias] = useState([]);
-  const [categoria, setCategoria] = useState(null);
+  const [, setCategoria] = useState(null);
 
   useEffect(() => {
     refreshCategorias();
