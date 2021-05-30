@@ -17,7 +17,7 @@ import br.com.jonatasferreira.myinvest.repository.InvestimentoRepository;
 
 @RestController
 @RequestMapping("/investimentos")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://jonatas-myinvest.netlify.app")
 public class InvestimentoResource {
 
 	@Autowired
