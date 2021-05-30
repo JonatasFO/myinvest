@@ -1,7 +1,5 @@
 import axios from "axios";
-
-const API_URL = "http://localhost:8080";
-
+import { API_URL } from "../utils/request";
 class CategoriaService {
   retrieveAllCategorias() {
     return axios.get(`${API_URL}/categorias`);
